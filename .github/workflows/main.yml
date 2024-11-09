@@ -1,4 +1,4 @@
-name: Build APK
+name: Build APKs for Multiple Apps
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
     - name: Set up Flutter
       uses: flutter-actions/setup-flutter@v2
       with:
-        flutter-version: '3.24.4' 
+        flutter-version: '3.10.5' # Use a specific stable version here
 
     - name: Cache Pub dependencies
       uses: actions/cache@v3
@@ -35,19 +35,38 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pub-
 
-    - name: Install dependencies
+    # Step 1: Build APK for visionapp
+    - name: Install dependencies for visionapp
       run: flutter pub get
       working-directory: visionapp/crop
 
-    - name: Build APK
+    - name: Build APK for visionapp
       run: flutter build apk --release
       working-directory: visionapp/crop
 
-    - name: Rename APK
+    - name: Rename visionapp APK
       run: mv visionapp/crop/build/app/outputs/flutter-apk/app-release.apk visionapp/crop/build/app/outputs/flutter-apk/visionapp.apk
 
-    - name: Upload APK artifact
+    - name: Upload visionapp APK artifact
       uses: actions/upload-artifact@v3
       with:
         name: visionapp.apk
         path: visionapp/crop/build/app/outputs/flutter-apk/visionapp.apk
+
+    # Step 2: Build APK for ml_kit_flutter
+    - name: Install dependencies for ml_kit_flutter
+      run: flutter pub get
+      working-directory: ml_kit_flutter/packages/example
+
+    - name: Build APK for ml_kit_flutter
+      run: flutter build apk --release
+      working-directory: ml_kit_flutter/packages/example
+
+    - name: Rename ml_kit_flutter APK
+      run: mv ml_kit_flutter/packages/example/build/app/outputs/flutter-apk/app-release.apk ml_kit_flutter/packages/example/build/app/outputs/flutter-apk/ml_kit_flutter.apk
+
+    - name: Upload ml_kit_flutter APK artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ml_kit_flutter.apk
+        path: ml_kit_flutter/packages/example/build/app/outputs/flutter-apk/ml_kit_flutter.apk
