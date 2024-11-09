@@ -8,7 +8,7 @@ import base64
 app = Flask(__name__)
 
 interpreter = tf.lite.Interpreter(
-    model_path=r"C:/Users/mrinm/OneDrive/Desktop/PlantDiseaseDetection/api/model.tflite"
+    model_path=r"model.tflite"
 )
 interpreter.allocate_tensors()
 

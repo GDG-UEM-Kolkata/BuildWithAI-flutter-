@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.207:5000/predict'),
+        Uri.parse('http://192.168.0.101:5000/predict'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(body),
       );
