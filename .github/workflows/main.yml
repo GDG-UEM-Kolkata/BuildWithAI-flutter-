@@ -23,9 +23,17 @@ jobs:
         java-version: '17'
 
     - name: Set up Flutter
-      uses: subosito/flutter-action@v2
+      uses: flutter-actions/setup-flutter@v2
       with:
-        flutter-version: 'latest' # Ensures latest stable Flutter
+        flutter-version: '3.24.4' 
+
+    - name: Cache Pub dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.pub-cache
+        key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pub-
 
     - name: Install dependencies
       run: flutter pub get
